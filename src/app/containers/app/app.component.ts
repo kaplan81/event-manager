@@ -1,17 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { EventService } from '../../services/events.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'evm-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  title = 'Plugsurfing Event Manager';
-
-  constructor(private eventService: EventService) {}
-
-  ngOnInit(): void {
-    this.eventService.getEvents().subscribe();
-  }
-}
+export class AppComponent {}

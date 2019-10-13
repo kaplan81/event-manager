@@ -1,0 +1,54 @@
+<div class="grid-container">
+  <mat-grid-list cols="2" rowHeight="350px">
+    <mat-grid-tile *ngFor="let event of events$ | async">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{ event.name }}
+            <button
+              mat-icon-button
+              class="more-button"
+              [matMenuTriggerFor]="menu"
+              aria-label="Toggle menu"
+            >
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+              <button mat-menu-item>Edit</button>
+              <button mat-menu-item>Remove</button>
+            </mat-menu>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <mat-list>
+            <mat-list-item class="event-type"
+              ><span class="bold">Event type:</span>&nbsp;
+              {{ event.type }}</mat-list-item
+            >
+            <mat-list-item class="event-created">
+              <span class="bold">Created on:</span>&nbsp;
+              {{ event.created * 1000 | date: 'dd/MM/yyyy' }}</mat-list-item
+            >
+            <mat-list-item class="event-date" *ngIf="event.type === 'meeting'">
+              <span class="bold">Date:</span>&nbsp;
+              {{ event.date * 1000 | date: 'dd/MM/yyyy' }}
+            </mat-list-item>
+            <mat-list-item class="event-date" *ngIf="event.type === 'call'">
+              <span class="bold">Date:</span>&nbsp;
+              {{ event.date * 1000 | date: 'dd/MM/yyyy' }}&nbsp; at
+              {{ event.date * 1000 | date: 'HH:mm' }}
+            </mat-list-item>
+            <mat-list-item class="event-participants">
+              <span class="bold">Participants:</span>&nbsp;
+              {{ event.participants }}</mat-list-item
+            >
+            <mat-list-item class="event-address">
+              <span class="bold">Address:</span>&nbsp;
+              {{ event.address }}</mat-list-item
+            >
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
