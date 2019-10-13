@@ -1,0 +1,76 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "type": "meeting",
+      "name": "Daily Meeting",
+      "created": 1572627600,
+      "date": 1572858000,
+      "participants": ["Athos", "Porthos", "Aramis"],
+      "address": "Weserstr. 175, 12045 Berlin"
+    },
+    {
+      "id": 2,
+      "type": "meeting",
+      "name": "Daily Meeting",
+      "created": 1572627600,
+      "date": 1572944400,
+      "participants": ["Athos", "Porthos", "Aramis"],
+      "address": "Weserstr. 175, 12045 Berlin"
+    },
+    {
+      "id": 3,
+      "type": "meeting",
+      "name": "Daily Meeting",
+      "created": 1572627600,
+      "date": 1573030800,
+      "participants": ["Athos", "Porthos", "Aramis"],
+      "address": "Weserstr. 175, 12045 Berlin"
+    },
+    {
+      "id": 4,
+      "type": "meeting",
+      "name": "Daily Meeting",
+      "created": 1572627600,
+      "date": 1573117200,
+      "participants": ["Athos", "Porthos", "Aramis"],
+      "address": "Weserstr. 175, 12045 Berlin"
+    },
+    {
+      "id": 5,
+      "type": "meeting",
+      "name": "Daily Meeting",
+      "created": 1572627600,
+      "date": 1573203600,
+      "participants": ["Athos", "Porthos", "Aramis"],
+      "address": "Weserstr. 175, 12045 Berlin"
+    },
+    {
+      "id": 6,
+      "type": "call",
+      "name": "Call with Arvydas",
+      "created": 1572861600,
+      "date": 1572976800,
+      "participants": ["Arvydas", "Andres"],
+      "address": null
+    },
+    {
+      "id": 7,
+      "type": "call",
+      "name": "Call with Andrés",
+      "created": 1573048800,
+      "date": 1573117200,
+      "participants": ["Andres", "Arvydas"],
+      "address": null
+    },
+    {
+      "id": 8,
+      "type": "call",
+      "name": "Call with Megan",
+      "created": 1573131600,
+      "date": 1573225200,
+      "participants": ["Megan", "Andres"],
+      "address": null
+    }
+  ]
+}
