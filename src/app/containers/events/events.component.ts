@@ -14,6 +14,14 @@ export class EventsComponent implements OnInit {
   constructor(private eventService: EventService) {}
 
   ngOnInit(): void {
+    this.refreshEvents();
+  }
+
+  deleteEvent(id: number): void {
+    this.eventService.deleteEvent(id).subscribe(() => this.refreshEvents());
+  }
+
+  private refreshEvents(): void {
     this.events$ = this.eventService.getEvents();
   }
 }

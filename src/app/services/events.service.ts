@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, take, tap } from 'rxjs/operators';
 import { Event } from '../models/event.model';
 import { ErrorService } from './error.service';
 
@@ -10,6 +10,16 @@ import { ErrorService } from './error.service';
 })
 export class EventService {
   constructor(private errorService: ErrorService, private http: HttpClient) {}
+
+  deleteEvent(id: number): Observable<any> {
+    const url = `events/${id}`;
+
+    return this.http.delete(url).pipe(
+      take(1),
+      tap(() => console.log(`Event with id ${id} deleted`)),
+      catchError(this.errorService.handleHttpError('deleteEvent'))
+    );
+  }
 
   getEvents(): Observable<Event[]> {
     const url = `events`;
