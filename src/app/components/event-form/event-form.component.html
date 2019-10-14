@@ -17,7 +17,11 @@
         <div class="col">
           <fieldset class="radio-field">
             <label>Event Type:</label>
-            <mat-radio-group class="radio-group" formControlName="type">
+            <mat-radio-group
+              class="radio-group"
+              formControlName="type"
+              [disabled]="event"
+            >
               <mat-radio-button class="radio-button" value="meeting"
                 >Meeting</mat-radio-button
               >
