@@ -14,7 +14,10 @@ export class EventService {
   createEvent(event: Event): Observable<Event> {
     const url = `events`;
 
-    return this.http.post<Event>(url, event);
+    return this.http.post<Event>(url, event).pipe(
+      tap((ev: Event) => console.log('Event created:', ev)),
+      catchError(this.errorService.handleHttpError('createEvent'))
+    );
   }
 
   deleteEvent(id: number): Observable<any> {
@@ -34,7 +37,7 @@ export class EventService {
       map((events: Event[]) => {
         return events.sort((a, b) => b.date - a.date);
       }),
-      tap((val: Event[]) => console.log(val)),
+      tap((evs: Event[]) => console.log('Events retrieved:', evs)),
       catchError(this.errorService.handleHttpError('getEvents'))
     );
   }

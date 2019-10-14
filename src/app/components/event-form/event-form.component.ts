@@ -48,7 +48,7 @@ export class EventFormComponent implements OnDestroy {
       this.fb.control('', Validators.required),
       this.fb.control('', Validators.required)
     ]),
-    address: [null, Validators.required]
+    address: [null]
   });
 
   constructor(
@@ -64,7 +64,9 @@ export class EventFormComponent implements OnDestroy {
           type === 'meeting'
             ? this.setParticipants('meeting')
             : this.setParticipants('call');
+        this.eventForm.removeControl('participants');
         this.eventForm.setControl('participants', participants);
+        console.log(this.eventForm);
         // tslint:disable-next-line: no-string-literal
         const address: AbstractControl = this.eventForm.controls['address'];
 
@@ -117,10 +119,7 @@ export class EventFormComponent implements OnDestroy {
     this.eventService
       .createEvent(event)
       .pipe(takeUntil(this.destroyed$))
-      .subscribe(val => {
-        console.log(val);
-        this.router.navigate(['dashboard']);
-      });
+      .subscribe(val => this.router.navigate(['dashboard']));
   }
 
   participantPlaceholder(i: number): string {
