@@ -11,6 +11,12 @@ import { ErrorService } from './error.service';
 export class EventService {
   constructor(private errorService: ErrorService, private http: HttpClient) {}
 
+  createEvent(event: Event): Observable<Event> {
+    const url = `events`;
+
+    return this.http.post<Event>(url, event);
+  }
+
   deleteEvent(id: number): Observable<any> {
     const url = `events/${id}`;
 
@@ -24,7 +30,7 @@ export class EventService {
   getEvents(): Observable<Event[]> {
     const url = `events`;
 
-    return this.http.get(url).pipe(
+    return this.http.get<Event[]>(url).pipe(
       map((events: Event[]) => {
         return events.sort((a, b) => b.date - a.date);
       }),

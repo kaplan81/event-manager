@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -13,7 +13,10 @@ import {
   MAT_DATE_FORMATS,
   MAT_DATE_LOCALE
 } from '@angular/material/core';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Event } from 'src/app/models/event.model';
 import { EVM_DATE_FORMAT, TIMES } from '../../date-format';
 import { EventService } from '../../services/events.service';
@@ -31,7 +34,8 @@ import { EventService } from '../../services/events.service';
     { provide: MAT_DATE_FORMATS, useValue: EVM_DATE_FORMAT }
   ]
 })
-export class EventFormComponent {
+export class EventFormComponent implements OnDestroy {
+  destroyed$ = new Subject<boolean>();
   times: string[] = TIMES;
 
   eventForm = this.fb.group({
@@ -44,13 +48,18 @@ export class EventFormComponent {
       this.fb.control('', Validators.required),
       this.fb.control('', Validators.required)
     ]),
-    address: ['']
+    address: [null, Validators.required]
   });
 
-  constructor(private eventService: EventService, private fb: FormBuilder) {
+  constructor(
+    private eventService: EventService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {
     this.eventForm
       .get('type')
-      .valueChanges.subscribe((type: 'meeting' | 'call') => {
+      .valueChanges.pipe(takeUntil(this.destroyed$))
+      .subscribe((type: 'meeting' | 'call') => {
         const participants: FormArray =
           type === 'meeting'
             ? this.setParticipants('meeting')
@@ -65,6 +74,11 @@ export class EventFormComponent {
           address.setValidators(null);
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   get participants(): FormArray {
@@ -100,7 +114,13 @@ export class EventFormComponent {
       address
     };
 
-    console.log('event:::', event);
+    this.eventService
+      .createEvent(event)
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(val => {
+        console.log(val);
+        this.router.navigate(['dashboard']);
+      });
   }
 
   participantPlaceholder(i: number): string {
