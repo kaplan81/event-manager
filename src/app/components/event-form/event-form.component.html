@@ -1,7 +1,8 @@
 <form [formGroup]="eventForm" novalidate (ngSubmit)="onSubmit()">
   <mat-card class="page-card">
     <mat-card-header>
-      <mat-card-title>New Event</mat-card-title>
+      <mat-card-title *ngIf="!event">Create Event</mat-card-title>
+      <mat-card-title *ngIf="event">Edit Event</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
