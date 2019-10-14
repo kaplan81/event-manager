@@ -42,10 +42,15 @@
               <span class="bold">Participants:</span>&nbsp;
               {{ event.participants }}</mat-list-item
             >
+
             <mat-list-item class="event-address" *ngIf="event.address !== null">
               <span class="bold">Address:</span>&nbsp;
-              {{ event.address }}</mat-list-item
-            >
+              <a
+                [href]="'https://maps.google.com/maps?q=' + event.address"
+                target="_blank"
+                >{{ event.address }}</a
+              >
+            </mat-list-item>
           </mat-list>
         </mat-card-content>
       </mat-card>
