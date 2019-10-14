@@ -9,6 +9,8 @@ import { ErrorService } from './error.service';
   providedIn: 'root'
 })
 export class EventService {
+  creatingEvent = false;
+
   constructor(private errorService: ErrorService, private http: HttpClient) {}
 
   createEvent(event: Event): Observable<Event> {

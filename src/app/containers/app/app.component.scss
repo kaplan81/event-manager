@@ -1,4 +1,8 @@
 mat-toolbar {
   justify-content: space-between;
   padding: 0 40px;
+  .home-link {
+    color: white;
+    text-decoration: none;
+  }
 }
