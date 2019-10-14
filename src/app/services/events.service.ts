@@ -30,6 +30,24 @@ export class EventService {
     );
   }
 
+  editEvent(id: number, event: Event): Observable<any> {
+    const url = `events/${id}`;
+
+    return this.http.put(url, event).pipe(
+      tap((ev: Event) => console.log('Event updated:', ev)),
+      catchError(this.errorService.handleHttpError('editEvent'))
+    );
+  }
+
+  getEvent(id: number): Observable<Event> {
+    const url = `events/${id}`;
+
+    return this.http.get<Event>(url).pipe(
+      tap((ev: Event) => console.log('Event retrieved:', ev)),
+      catchError(this.errorService.handleHttpError('getEvent'))
+    );
+  }
+
   getEvents(): Observable<Event[]> {
     const url = `events`;
 

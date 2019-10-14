@@ -1,4 +1,10 @@
-import { Component, OnDestroy } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -34,9 +40,14 @@ import { EventService } from '../../services/events.service';
     { provide: MAT_DATE_FORMATS, useValue: EVM_DATE_FORMAT }
   ]
 })
-export class EventFormComponent implements OnDestroy {
+export class EventFormComponent implements OnChanges, OnDestroy {
+  @Input() event: Event;
+
   destroyed$ = new Subject<boolean>();
+
   times: string[] = TIMES;
+
+  submitButtonText = 'Create';
 
   eventForm = this.fb.group({
     name: ['', Validators.required],
@@ -78,6 +89,29 @@ export class EventFormComponent implements OnDestroy {
       });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    for (const propName in changes) {
+      if (propName === 'event') {
+        this.submitButtonText = 'Update';
+        const event: Event = changes[propName].currentValue;
+        if (event !== null) {
+          const time: string = moment(event.date * 1000).format('HH:mm');
+          this.eventForm = this.fb.group({
+            name: [event.name, Validators.required],
+            type: [event.type, Validators.required],
+            date: [moment(event.date * 1000), Validators.required],
+            time: [time, Validators.required],
+            participants: this.setParticipants(
+              event.type,
+              ...event.participants
+            ),
+            address: [null]
+          });
+        }
+      }
+    }
+  }
+
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
@@ -93,7 +127,7 @@ export class EventFormComponent implements OnDestroy {
 
   onSubmit(): void {
     const formVal: any = this.eventForm.value;
-    const type: string = formVal.type;
+    const type: 'meeting' | 'call' = formVal.type;
     const name: string = formVal.name;
     const participants: string[] = formVal.participants;
     const created: number = moment().unix();
@@ -106,7 +140,7 @@ export class EventFormComponent implements OnDestroy {
     const date: number = moment([year, month, day, hour, minute]).unix();
     const address: string | null = formVal.address;
 
-    const event: Event = {
+    const newEvent: Event = {
       id: null,
       type,
       name,
@@ -116,10 +150,17 @@ export class EventFormComponent implements OnDestroy {
       address
     };
 
-    this.eventService
-      .createEvent(event)
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(val => this.router.navigate(['dashboard']));
+    if (this.event) {
+      this.eventService
+        .editEvent(this.event.id, newEvent)
+        .pipe(takeUntil(this.destroyed$))
+        .subscribe(val => this.router.navigate(['dashboard']));
+    } else {
+      this.eventService
+        .createEvent(newEvent)
+        .pipe(takeUntil(this.destroyed$))
+        .subscribe(val => this.router.navigate(['dashboard']));
+    }
   }
 
   participantPlaceholder(i: number): string {
@@ -133,15 +174,30 @@ export class EventFormComponent implements OnDestroy {
     return formControlName.toString();
   }
 
-  private setParticipants(type: 'meeting' | 'call'): FormArray {
-    const participantsCount: number = type === 'meeting' ? 3 : 2;
+  private setParticipants(
+    type: 'meeting' | 'call',
+    ...participants: string[]
+  ): FormArray {
+    let participantsCount: number = type === 'meeting' ? 3 : 2;
+    if (participants) {
+      participantsCount = participants.length;
+    }
+    const array: any[] = new Array(participantsCount);
     const participantsValidator: ValidationErrors =
       type === 'meeting'
         ? Validators.required
         : Validators.compose([Validators.required, Validators.email]);
-    const participantsControlList: FormControl[] = new Array(
-      participantsCount
-    ).fill(this.fb.control('', participantsValidator));
+    let participantsControlList: FormControl[];
+
+    if (participants) {
+      participantsControlList = Array.from(array, (val: any, i: number) => {
+        return this.fb.control(participants[i], participantsValidator);
+      });
+    } else {
+      participantsControlList = Array.from(array, (val: any, i: number) => {
+        return this.fb.control('', participantsValidator);
+      });
+    }
 
     return this.fb.array(participantsControlList);
   }

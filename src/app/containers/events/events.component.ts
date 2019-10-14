@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Event } from 'src/app/models/event.model';
 import { EventService } from '../../services/events.service';
@@ -11,14 +10,10 @@ import { EventService } from '../../services/events.service';
 export class EventsComponent implements OnInit {
   events$: Observable<Event[]>;
 
-  constructor(private eventService: EventService, private router: Router) {}
+  constructor(private eventService: EventService) {}
 
   ngOnInit(): void {
     this.refreshEvents();
-  }
-
-  goToEdit(eventId: number): void {
-    this.router.navigate(['edit', eventId]);
   }
 
   deleteEvent(id: number): void {

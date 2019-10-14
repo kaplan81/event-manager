@@ -1,6 +1,6 @@
 export interface Event {
   id: number;
-  type: string;
+  type: 'meeting' | 'call';
   name: string;
   created: number;
   date: number;

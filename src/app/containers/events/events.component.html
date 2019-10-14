@@ -14,7 +14,7 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu" xPosition="before">
-              <button mat-menu-item (click)="goToEdit(event.id)">
+              <button mat-menu-item [routerLink]="['/edit', event.id]">
                 Edit
               </button>
               <button mat-menu-item (click)="deleteEvent(event.id)">
@@ -33,11 +33,7 @@
               <span class="bold">Created on:</span>&nbsp;
               {{ event.created * 1000 | date: 'dd/MM/yyyy' }}</mat-list-item
             >
-            <mat-list-item class="event-date" *ngIf="event.type === 'meeting'">
-              <span class="bold">Date:</span>&nbsp;
-              {{ event.date * 1000 | date: 'dd/MM/yyyy' }}
-            </mat-list-item>
-            <mat-list-item class="event-date" *ngIf="event.type === 'call'">
+            <mat-list-item class="event-date">
               <span class="bold">Date:</span>&nbsp;
               {{ event.date * 1000 | date: 'dd/MM/yyyy' }}&nbsp; at
               {{ event.date * 1000 | date: 'HH:mm' }}
