@@ -77,7 +77,7 @@ export class EventFormComponent implements OnChanges, OnDestroy {
             : this.setParticipants('call');
         this.eventForm.removeControl('participants');
         this.eventForm.setControl('participants', participants);
-        console.log(this.eventForm);
+
         // tslint:disable-next-line: no-string-literal
         const address: AbstractControl = this.eventForm.controls['address'];
 
@@ -179,7 +179,7 @@ export class EventFormComponent implements OnChanges, OnDestroy {
     ...participants: string[]
   ): FormArray {
     let participantsCount: number = type === 'meeting' ? 3 : 2;
-    if (participants) {
+    if (participants.length > 0) {
       participantsCount = participants.length;
     }
     const array: any[] = new Array(participantsCount);
@@ -189,7 +189,7 @@ export class EventFormComponent implements OnChanges, OnDestroy {
         : Validators.compose([Validators.required, Validators.email]);
     let participantsControlList: FormControl[];
 
-    if (participants) {
+    if (participants.length > 0) {
       participantsControlList = Array.from(array, (val: any, i: number) => {
         return this.fb.control(participants[i], participantsValidator);
       });
