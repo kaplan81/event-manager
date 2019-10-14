@@ -47,7 +47,7 @@ export class EventFormComponent implements OnChanges, OnDestroy {
 
   times: string[] = TIMES;
 
-  submitButtonText = 'Create';
+  submitButtonText = 'Save';
 
   eventForm = this.fb.group({
     name: ['', Validators.required],
