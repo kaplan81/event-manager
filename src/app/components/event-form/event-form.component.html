@@ -1,0 +1,96 @@
+<form [formGroup]="eventForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card class="page-card">
+    <mat-card-header>
+      <mat-card-title>New Event</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Event Name" formControlName="name" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <fieldset class="radio-field">
+            <label>Event Type:</label>
+            <mat-radio-group class="radio-group" formControlName="type">
+              <mat-radio-button class="radio-button" value="meeting"
+                >Meeting</mat-radio-button
+              >
+              <mat-radio-button class="radio-button" value="call"
+                >Call</mat-radio-button
+              >
+            </mat-radio-group>
+          </fieldset>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              [matDatepicker]="datePicker"
+              placeholder="DD/MM/YYYY"
+              formControlName="date"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="datePicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #datePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-label>Select Working Time</mat-label>
+            <select matNativeControl formControlName="time">
+              <option [value]="time" *ngFor="let time of times">
+                {{ time }}
+              </option>
+            </select>
+          </mat-form-field>
+        </div>
+      </div>
+      <ng-container formArrayName="participants">
+        <div
+          class="row"
+          *ngFor="let participant of participants.controls; let i = index"
+        >
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                [placeholder]="participantPlaceholder(i)"
+                [formControlName]="toString(i)"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+      </ng-container>
+      <div class="row" *ngIf="isMeeting()">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Address" formControlName="address" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <mat-card-actions>
+        <button
+          class="create-event"
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!eventForm.valid"
+        >
+          Create
+        </button>
+      </mat-card-actions>
+    </mat-card-content>
+  </mat-card>
+</form>

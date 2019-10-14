@@ -51,7 +51,7 @@
       "name": "Call with Arvydas",
       "created": 1572861600,
       "date": 1572976800,
-      "participants": ["Arvydas", "Andres"],
+      "participants": ["arvydas@mail.com", "andres@mail.com"],
       "address": null
     },
     {
@@ -60,7 +60,7 @@
       "name": "Call with Andrés",
       "created": 1573048800,
       "date": 1573117200,
-      "participants": ["Andres", "Arvydas"],
+      "participants": ["andres@mail.com", "arvydas@mail.com"],
       "address": null
     },
     {
@@ -69,7 +69,7 @@
       "name": "Call with Megan",
       "created": 1573131600,
       "date": 1573225200,
-      "participants": ["Megan", "Andres"],
+      "participants": ["megan@mail.com", "andres@mail.com"],
       "address": null
     }
   ]
